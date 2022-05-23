@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, Text } from 'react-native';
 import {
   Directions,
   FlingGestureHandler,
@@ -8,8 +8,11 @@ import {
 } from 'react-native-gesture-handler';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { defaultTheme as initialTheme, ReaderContext } from './context';
+import { Pager } from './Pager';
 import template from './template';
 import type { ReaderProps } from './types';
+import ViewPager from 'react-native-pager-view';
+import PagerView from 'react-native-pager-view';
 
 export function Reader({
   src,
@@ -42,22 +45,23 @@ export function Reader({
   initialLocations,
 }: ReaderProps) {
   const {
-    registerBook,
-    setIsLoading,
-    setTotalLocations,
-    setCurrentLocation,
-    setProgress,
-    setLocations,
-    setAtStart,
-    setAtEnd,
-    goNext,
-    goPrevious,
-    isLoading,
-    goToLocation,
-    changeTheme,
-    setKey,
-    setSearchResults,
-    theme,
+    view1,
+    // registerBook,
+    // setIsLoading,
+    // setTotalLocations,
+    // setCurrentLocation,
+    // setProgress,
+    // setLocations,
+    // setAtStart,
+    // setAtEnd,
+    // goNext,
+    // goPrevious,
+    // isLoading,
+    // goToLocation,
+    // changeTheme,
+    // setKey,
+    // setSearchResults,
+    // theme,
   } = useContext(ReaderContext);
   const book = useRef<WebView>(null);
 
@@ -89,22 +93,22 @@ export function Reader({
     delete parsedEvent.type;
 
     if (type === 'onStarted') {
-      setIsLoading(true);
+      view1.setIsLoading(true);
 
-      changeTheme(defaultTheme);
+      view1.changeTheme(defaultTheme);
 
       return onStarted();
     }
 
     if (type === 'onReady') {
       const { totalLocations, currentLocation, progress } = parsedEvent;
-      setIsLoading(false);
-      setTotalLocations(totalLocations);
-      setCurrentLocation(currentLocation);
-      setProgress(progress);
+      view1.setIsLoading(false);
+      view1.setTotalLocations(totalLocations);
+      view1.setCurrentLocation(currentLocation);
+      view1.setProgress(progress);
 
       if (initialLocation) {
-        goToLocation(initialLocation);
+        view1.goToLocation(initialLocation);
       }
 
       return onReady(totalLocations, currentLocation, progress);
@@ -112,7 +116,7 @@ export function Reader({
 
     if (type === 'onDisplayError') {
       const { reason } = parsedEvent;
-      setIsLoading(false);
+      view1.setIsLoading(false);
 
       return onDisplayError(reason);
     }
@@ -125,30 +129,30 @@ export function Reader({
 
     if (type === 'onLocationChange') {
       const { totalLocations, currentLocation, progress } = parsedEvent;
-      setTotalLocations(totalLocations);
-      setCurrentLocation(currentLocation);
-      setProgress(progress);
+      view1.setTotalLocations(totalLocations);
+      view1.setCurrentLocation(currentLocation);
+      view1.setProgress(progress);
 
-      if (currentLocation.atStart) setAtStart(true);
-      else if (currentLocation.atEnd) setAtEnd(true);
+      if (currentLocation.atStart) view1.setAtStart(true);
+      else if (currentLocation.atEnd) view1.setAtEnd(true);
       else {
-        setAtStart(false);
-        setAtEnd(false);
+        view1.setAtStart(false);
+        view1.setAtEnd(false);
       }
       return onLocationChange(totalLocations, currentLocation, progress);
     }
 
     if (type === 'onSearch') {
       const { results } = parsedEvent;
-      setSearchResults(results);
+      view1.setSearchResults(results);
 
       return onSearch(results);
     }
 
     if (type === 'onLocationsReady') {
       const { epubKey } = parsedEvent;
-      setLocations(parsedEvent.locations);
-      setKey(epubKey);
+      view1.setLocations(parsedEvent.locations);
+      view1.setKey(epubKey);
 
       return onLocationsReady(epubKey, parsedEvent.locations);
     }
@@ -172,13 +176,13 @@ export function Reader({
     }
 
     if (type === 'onBeginning') {
-      setAtStart(true);
+      view1.setAtStart(true);
 
       return onBeginning();
     }
 
     if (type === 'onFinish') {
-      setAtEnd(true);
+      view1.setAtEnd(true);
 
       return onFinish();
     }
@@ -203,8 +207,8 @@ export function Reader({
   }
 
   useEffect(() => {
-    if (book.current) registerBook(book.current);
-  }, [registerBook]);
+    if (book.current) view1.registerBook(book.current);
+  }, [view1.registerBook]);
 
   let lastTap: number | null = null;
   let timer: NodeJS.Timeout;
@@ -225,70 +229,134 @@ export function Reader({
   };
 
   return (
-    <GestureHandlerRootView style={{ width, height }}>
-      <FlingGestureHandler
-        direction={Directions.RIGHT}
-        onHandlerStateChange={({ nativeEvent }) => {
-          if (nativeEvent.state === State.ACTIVE && enableSwipe) {
-            goPrevious();
-            onSwipeRight();
-          }
-        }}
-      >
+    <>
+      {/* <Pager /> */}
+      {/* <GestureHandlerRootView style={{ width, height }}>
         <FlingGestureHandler
-          direction={Directions.LEFT}
+          direction={Directions.RIGHT}
           onHandlerStateChange={({ nativeEvent }) => {
             if (nativeEvent.state === State.ACTIVE && enableSwipe) {
-              goNext();
-              onSwipeLeft();
+              goPrevious();
+              onSwipeRight();
             }
           }}
         >
+          <FlingGestureHandler
+            direction={Directions.LEFT}
+            onHandlerStateChange={({ nativeEvent }) => {
+              if (nativeEvent.state === State.ACTIVE && enableSwipe) {
+                goNext();
+                onSwipeLeft();
+              }
+            }}
+          > */}
           <View
             style={{
               height: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              flexGrow: 1,
             }}
           >
-            {isLoading && (
+            <PagerView
+              initialPage={0}
+              style={{
+                flex: 1
+              }}
+            >
+              <View>
+                <Text>Page1</Text>
+              </View>
               <View
                 style={{
-                  width: '100%',
                   height: '100%',
-                  position: 'absolute',
-                  top: 0,
-                  zIndex: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                {renderLoadingComponent()}
-              </View>
-            )}
+                {view1.isLoading && (
+                  <View
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                      top: 0,
+                      zIndex: 2,
+                    }}
+                  >
+                    {renderLoadingComponent()}
+                  </View>
+                )}
 
-            <TouchableWithoutFeedback onPress={handleDoublePress}>
-              <WebView
-                ref={book}
-                source={{ html: template }}
-                showsVerticalScrollIndicator={false}
-                javaScriptEnabled
-                injectedJavaScriptBeforeContentLoaded={injectedJS}
-                originWhitelist={['*']}
-                scrollEnabled={false}
-                mixedContentMode="compatibility"
-                onMessage={onMessage}
-                allowUniversalAccessFromFileURLs={true}
-                allowFileAccessFromFileURLs={true}
-                allowFileAccess
+                <TouchableWithoutFeedback onPress={handleDoublePress}>
+                  <WebView
+                    ref={book}
+                    source={{ html: template }}
+                    showsVerticalScrollIndicator={false}
+                    javaScriptEnabled
+                    injectedJavaScriptBeforeContentLoaded={injectedJS}
+                    originWhitelist={['*']}
+                    scrollEnabled={false}
+                    mixedContentMode="compatibility"
+                    onMessage={onMessage}
+                    allowUniversalAccessFromFileURLs={true}
+                    allowFileAccessFromFileURLs={true}
+                    allowFileAccess
+                    style={{
+                      width,
+                      backgroundColor: view1.theme.body.background,
+                      height,
+                    }}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+              <View
                 style={{
-                  width,
-                  backgroundColor: theme.body.background,
-                  height,
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-              />
-            </TouchableWithoutFeedback>
+              >
+                {view1.isLoading && (
+                  <View
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                      top: 0,
+                      zIndex: 2,
+                    }}
+                  >
+                    {renderLoadingComponent()}
+                  </View>
+                )}
+
+                <TouchableWithoutFeedback onPress={handleDoublePress}>
+                  <WebView
+                    ref={book}
+                    source={{ html: template }}
+                    showsVerticalScrollIndicator={false}
+                    javaScriptEnabled
+                    injectedJavaScriptBeforeContentLoaded={injectedJS}
+                    originWhitelist={['*']}
+                    scrollEnabled={false}
+                    mixedContentMode="compatibility"
+                    onMessage={onMessage}
+                    allowUniversalAccessFromFileURLs={true}
+                    allowFileAccessFromFileURLs={true}
+                    allowFileAccess
+                    style={{
+                      width,
+                      backgroundColor: view1.theme.body.background,
+                      height,
+                    }}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+
+            </PagerView>
           </View>
+          {/* </FlingGestureHandler>
         </FlingGestureHandler>
-      </FlingGestureHandler>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView> */}
+    </>
   );
 }
