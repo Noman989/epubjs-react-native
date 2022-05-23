@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { View, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, useWindowDimensions } from 'react-native';
 import {
   Directions,
   FlingGestureHandler,
@@ -13,6 +13,7 @@ import template from './template';
 import type { ReaderProps } from './types';
 import ViewPager from 'react-native-pager-view';
 import PagerView from 'react-native-pager-view';
+import { BookView } from './BookView';
 
 export function Reader({
   src,
@@ -46,6 +47,8 @@ export function Reader({
 }: ReaderProps) {
   const {
     view1,
+    view2,
+    view3
     // registerBook,
     // setIsLoading,
     // setTotalLocations,
@@ -261,95 +264,39 @@ export function Reader({
               style={{
                 flex: 1
               }}
+              onPageSelected={(e) => {
+                console.log("Selected");
+              }}
             >
+              <BookView
+                src={src}
+                height={height}
+                width={width}
+                view={view1}
+              >
+              </BookView>
+              <BookView
+
+                onReady={() => {view2.goNext();}}
+                src={src}
+                height={height}
+                width={width}
+                view={view2}
+              >
+              </BookView>
+              <BookView
+
+                onReady={() => {view3.goNext(); view3.goNext()}}
+                src={src}
+                height={height}
+                width={width}
+                view={view3}
+              >
+              </BookView>
               <View>
-                <Text>Page1</Text>
-              </View>
-              <View
-                style={{
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                {view1.isLoading && (
-                  <View
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      position: 'absolute',
-                      top: 0,
-                      zIndex: 2,
-                    }}
-                  >
-                    {renderLoadingComponent()}
-                  </View>
-                )}
-
-                <TouchableWithoutFeedback onPress={handleDoublePress}>
-                  <WebView
-                    ref={book}
-                    source={{ html: template }}
-                    showsVerticalScrollIndicator={false}
-                    javaScriptEnabled
-                    injectedJavaScriptBeforeContentLoaded={injectedJS}
-                    originWhitelist={['*']}
-                    scrollEnabled={false}
-                    mixedContentMode="compatibility"
-                    onMessage={onMessage}
-                    allowUniversalAccessFromFileURLs={true}
-                    allowFileAccessFromFileURLs={true}
-                    allowFileAccess
-                    style={{
-                      width,
-                      backgroundColor: view1.theme.body.background,
-                      height,
-                    }}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
-              <View
-                style={{
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                {view1.isLoading && (
-                  <View
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      position: 'absolute',
-                      top: 0,
-                      zIndex: 2,
-                    }}
-                  >
-                    {renderLoadingComponent()}
-                  </View>
-                )}
-
-                <TouchableWithoutFeedback onPress={handleDoublePress}>
-                  <WebView
-                    ref={book}
-                    source={{ html: template }}
-                    showsVerticalScrollIndicator={false}
-                    javaScriptEnabled
-                    injectedJavaScriptBeforeContentLoaded={injectedJS}
-                    originWhitelist={['*']}
-                    scrollEnabled={false}
-                    mixedContentMode="compatibility"
-                    onMessage={onMessage}
-                    allowUniversalAccessFromFileURLs={true}
-                    allowFileAccessFromFileURLs={true}
-                    allowFileAccess
-                    style={{
-                      width,
-                      backgroundColor: view1.theme.body.background,
-                      height,
-                    }}
-                  />
-                </TouchableWithoutFeedback>
+                <WebView
+                  source={{uri: 'https://www.google.com'}}
+                ></WebView>
               </View>
 
             </PagerView>
