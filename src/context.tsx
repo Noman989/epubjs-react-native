@@ -175,7 +175,7 @@ function bookReducer(state: InitialState, action: BookActions): InitialState {
   }
 }
 
-export interface View {
+export interface EpubView {
   registerBook: (bookRef: WebView) => void;
   setAtStart: (atStart: boolean) => void;
   setAtEnd: (atEnd: boolean) => void;
@@ -315,10 +315,10 @@ export interface View {
   setSearchResults: (results: SearchResult[]) => void;
 }
 
-interface ReaderContextProps {
-  view1: View;
-  view2: View;
-  view3: View;
+export interface ReaderContextProps {
+  view1: EpubView;
+  view2: EpubView;
+  view3: EpubView;
 }
 
 const ReaderContext = createContext<ReaderContextProps>({
