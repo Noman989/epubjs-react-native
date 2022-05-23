@@ -175,7 +175,7 @@ function bookReducer(state: InitialState, action: BookActions): InitialState {
   }
 }
 
-export interface ReaderContextProps {
+export interface View {
   registerBook: (bookRef: WebView) => void;
   setAtStart: (atStart: boolean) => void;
   setAtEnd: (atEnd: boolean) => void;
@@ -315,44 +315,130 @@ export interface ReaderContextProps {
   setSearchResults: (results: SearchResult[]) => void;
 }
 
+interface ReaderContextProps {
+  view1: View;
+  view2: View;
+  view3: View;
+}
+
 const ReaderContext = createContext<ReaderContextProps>({
-  registerBook: () => {},
-  setAtStart: () => {},
-  setAtEnd: () => {},
-  setTotalLocations: () => {},
-  setCurrentLocation: () => {},
-  setProgress: () => {},
-  setLocations: () => {},
-  setIsLoading: () => {},
-
-  goToLocation: () => {},
-  goPrevious: () => {},
-  goNext: () => {},
-  getLocations: () => [],
-  getCurrentLocation: () => null,
-  search: () => {},
-
-  changeTheme: () => {},
-  changeFontFamily: () => {},
-  changeFontSize: () => {},
-
-  addMark: () => {},
-  removeMark: () => {},
-
-  setKey: () => {},
-  key: '',
-
-  theme: defaultTheme,
-  atStart: false,
-  atEnd: false,
-  totalLocations: 0,
-  currentLocation: null,
-  progress: 0,
-  locations: [],
-  isLoading: false,
-
-  searchResults: [],
-  setSearchResults: () => {},
+  view1: {
+    registerBook: () => {},
+    setAtStart: () => {},
+    setAtEnd: () => {},
+    setTotalLocations: () => {},
+    setCurrentLocation: () => {},
+    setProgress: () => {},
+    setLocations: () => {},
+    setIsLoading: () => {},
+  
+    goToLocation: () => {},
+    goPrevious: () => {},
+    goNext: () => {},
+    getLocations: () => [],
+    getCurrentLocation: () => null,
+    search: () => {},
+  
+    changeTheme: () => {},
+    changeFontFamily: () => {},
+    changeFontSize: () => {},
+  
+    addMark: () => {},
+    removeMark: () => {},
+  
+    setKey: () => {},
+    key: '',
+  
+    theme: defaultTheme,
+    atStart: false,
+    atEnd: false,
+    totalLocations: 0,
+    currentLocation: null,
+    progress: 0,
+    locations: [],
+    isLoading: false,
+  
+    searchResults: [],
+    setSearchResults: () => {},
+  },
+  view2: {
+    registerBook: () => {},
+    setAtStart: () => {},
+    setAtEnd: () => {},
+    setTotalLocations: () => {},
+    setCurrentLocation: () => {},
+    setProgress: () => {},
+    setLocations: () => {},
+    setIsLoading: () => {},
+  
+    goToLocation: () => {},
+    goPrevious: () => {},
+    goNext: () => {},
+    getLocations: () => [],
+    getCurrentLocation: () => null,
+    search: () => {},
+  
+    changeTheme: () => {},
+    changeFontFamily: () => {},
+    changeFontSize: () => {},
+  
+    addMark: () => {},
+    removeMark: () => {},
+  
+    setKey: () => {},
+    key: '',
+  
+    theme: defaultTheme,
+    atStart: false,
+    atEnd: false,
+    totalLocations: 0,
+    currentLocation: null,
+    progress: 0,
+    locations: [],
+    isLoading: false,
+  
+    searchResults: [],
+    setSearchResults: () => {},
+  },
+  view3: {
+    registerBook: () => {},
+    setAtStart: () => {},
+    setAtEnd: () => {},
+    setTotalLocations: () => {},
+    setCurrentLocation: () => {},
+    setProgress: () => {},
+    setLocations: () => {},
+    setIsLoading: () => {},
+  
+    goToLocation: () => {},
+    goPrevious: () => {},
+    goNext: () => {},
+    getLocations: () => [],
+    getCurrentLocation: () => null,
+    search: () => {},
+  
+    changeTheme: () => {},
+    changeFontFamily: () => {},
+    changeFontSize: () => {},
+  
+    addMark: () => {},
+    removeMark: () => {},
+  
+    setKey: () => {},
+    key: '',
+  
+    theme: defaultTheme,
+    atStart: false,
+    atEnd: false,
+    totalLocations: 0,
+    currentLocation: null,
+    progress: 0,
+    locations: [],
+    isLoading: false,
+  
+    searchResults: [],
+    setSearchResults: () => {},
+  },
 });
 
 const ReaderProvider: React.FC = ({ children }) => {
@@ -492,43 +578,123 @@ const ReaderProvider: React.FC = ({ children }) => {
   return (
     <ReaderContext.Provider
       value={{
-        registerBook,
-        setAtStart,
-        setAtEnd,
-        setTotalLocations,
-        setCurrentLocation,
-        setProgress,
-        setLocations,
-        setIsLoading,
-
-        goToLocation,
-        goPrevious,
-        goNext,
-        getLocations,
-        getCurrentLocation,
-        search,
-
-        addMark,
-        removeMark,
-
-        setKey,
-        key: state.key,
-
-        changeTheme,
-        changeFontFamily,
-        changeFontSize,
-        theme: state.theme,
-
-        atStart: state.atStart,
-        atEnd: state.atEnd,
-        totalLocations: state.totalLocations,
-        currentLocation: state.currentLocation,
-        progress: state.progress,
-        locations: state.locations,
-        isLoading: state.isLoading,
-
-        searchResults: state.searchResults,
-        setSearchResults,
+        view1: {
+          registerBook,
+          setAtStart,
+          setAtEnd,
+          setTotalLocations,
+          setCurrentLocation,
+          setProgress,
+          setLocations,
+          setIsLoading,
+  
+          goToLocation,
+          goPrevious,
+          goNext,
+          getLocations,
+          getCurrentLocation,
+          search,
+  
+          addMark,
+          removeMark,
+  
+          setKey,
+          key: state.key,
+  
+          changeTheme,
+          changeFontFamily,
+          changeFontSize,
+          theme: state.theme,
+  
+          atStart: state.atStart,
+          atEnd: state.atEnd,
+          totalLocations: state.totalLocations,
+          currentLocation: state.currentLocation,
+          progress: state.progress,
+          locations: state.locations,
+          isLoading: state.isLoading,
+  
+          searchResults: state.searchResults,
+          setSearchResults,
+        },
+        view2: {
+          registerBook,
+          setAtStart,
+          setAtEnd,
+          setTotalLocations,
+          setCurrentLocation,
+          setProgress,
+          setLocations,
+          setIsLoading,
+  
+          goToLocation,
+          goPrevious,
+          goNext,
+          getLocations,
+          getCurrentLocation,
+          search,
+  
+          addMark,
+          removeMark,
+  
+          setKey,
+          key: state.key,
+  
+          changeTheme,
+          changeFontFamily,
+          changeFontSize,
+          theme: state.theme,
+  
+          atStart: state.atStart,
+          atEnd: state.atEnd,
+          totalLocations: state.totalLocations,
+          currentLocation: state.currentLocation,
+          progress: state.progress,
+          locations: state.locations,
+          isLoading: state.isLoading,
+  
+          searchResults: state.searchResults,
+          setSearchResults,
+        },
+        view3: {
+          registerBook,
+          setAtStart,
+          setAtEnd,
+          setTotalLocations,
+          setCurrentLocation,
+          setProgress,
+          setLocations,
+          setIsLoading,
+  
+          goToLocation,
+          goPrevious,
+          goNext,
+          getLocations,
+          getCurrentLocation,
+          search,
+  
+          addMark,
+          removeMark,
+  
+          setKey,
+          key: state.key,
+  
+          changeTheme,
+          changeFontFamily,
+          changeFontSize,
+          theme: state.theme,
+  
+          atStart: state.atStart,
+          atEnd: state.atEnd,
+          totalLocations: state.totalLocations,
+          currentLocation: state.currentLocation,
+          progress: state.progress,
+          locations: state.locations,
+          isLoading: state.isLoading,
+  
+          searchResults: state.searchResults,
+          setSearchResults,
+        }
       }}
     >
       {children}
