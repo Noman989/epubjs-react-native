@@ -72,8 +72,8 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-webview": "^11.15.0",
-    "react-native-gesture-handler": "^2.1.1"
+    "react-native-gesture-handler": "^2.1.1",
+    "react-native-webview": "^11.15.0"
   },
   "jest": {
     "preset": "react-native",
@@ -147,5 +147,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "react-native-pager-view": "^5.4.22"
   }
 }
